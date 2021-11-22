@@ -54,15 +54,23 @@ const userSchema = new mongoose.Schema({
     type: Date,
     required: [true, "Please provide the date of birth"],
   },
-  gender: {
-    type: String,
-    required: [true, "Please provide the gender"],
-    enum: ["male", "female"],
-  },
+
   amount: {
     type: Number,
     default: 0,
   },
+  transactions: [
+    {
+      transactionType: {
+        type: String,
+        default: "Deposit",
+      },
+      amount: {
+        type: Number,
+        default: "500",
+      },
+    },
+  ],
 });
 
 // User Model

@@ -17,8 +17,13 @@ exports.transfer = catchAsync(async (req, res, next) => {
 
   const user = await User.findOne({ email });
   let amount = user.amount - transferAmount;
+  if (amount < 0) {
+    res.status(200).json({
+      status: "Error",
+      message: "No enough money",
+    });
+  }
   const updatedUser = await User.findOneAndUpdate({ email, amount });
-
   await updateReference(req);
 
   res.status(200).json({
@@ -35,7 +40,6 @@ const updateReference = catchAsync(async (req) => {
   const amount = transferAmount + targetUser.amount;
   targetUser.amount = amount;
 
-  console.log(targetUser);
   const targetUpdatedUser = await User.findOneAndUpdate(
     { email: email },
     { amount: amount }
