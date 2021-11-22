@@ -73,3 +73,40 @@ exports.deposit = catchAsync(async (req, res, next) => {
     message: "Deposit successful",
   });
 });
+
+exports.nicChecker = catchAsync(async (req, res, next) => {
+  const { nic } = req.body;
+
+  // 2) check if the user exists & password is correct
+  const user = await User.findOne({ nic: nic });
+
+  if (user) {
+    res.status(200).json({
+      status: "fail",
+      message: "NIC already exists",
+    });
+  }
+
+  res.status(200).json({
+    status: "success",
+    message: "Valid NIC",
+  });
+});
+
+exports.emailChecker = catchAsync(async (req, res, next) => {
+  const { email } = req.body;
+
+  const user = await User.findOne({ email: email });
+
+  if (user) {
+    return res.status(200).json({
+      status: "fail",
+      message: "Email already exists",
+    });
+  }
+
+  res.status(200).json({
+    status: "success",
+    message: "Valid Email",
+  });
+});

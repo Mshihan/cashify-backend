@@ -23,5 +23,7 @@ router
 router
   .route("/transfer")
   .patch(authControllers.protected, userControllers.transfer);
+router.route("/nic-check").get(userControllers.nicChecker);
+router.route("/email-check").get(userControllers.emailChecker);
 
 module.exports = router;
