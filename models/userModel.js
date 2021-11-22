@@ -65,9 +65,13 @@ const userSchema = new mongoose.Schema({
         type: String,
         default: "Deposit",
       },
-      amount: {
+      transferAmount: {
         type: Number,
         default: "500",
+      },
+      DateTime: {
+        type: Date,
+        default: new Date(),
       },
     },
   ],

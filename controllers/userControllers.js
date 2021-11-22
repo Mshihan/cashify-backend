@@ -23,7 +23,19 @@ exports.transfer = catchAsync(async (req, res, next) => {
       message: "No enough money",
     });
   }
-  const updatedUser = await User.findOneAndUpdate({ email, amount });
+  const updatedUser = await User.findOneAndUpdate(
+    { email: email },
+    {
+      amount: amount,
+      $push: {
+        transactions: {
+          transactionType: "Withdraw",
+          transferAmount: transferAmount,
+        },
+      },
+    }
+  );
+  await User.updateOne({ email: email }, {});
   await updateReference(req);
 
   res.status(200).json({
@@ -42,8 +54,24 @@ const updateReference = catchAsync(async (req) => {
 
   const targetUpdatedUser = await User.findOneAndUpdate(
     { email: email },
-    { amount: amount }
+    {
+      amount: amount,
+      $push: {
+        transactions: {
+          transactionType: "Deposit",
+          transferAmount: req.body.amount,
+        },
+      },
+    }
   );
+  // await User.updateOne(
+  //   { email: email },
+  //   {
+  //     $push: {
+  //       transactions: { transactionType: "Deposit", amount: transferAmount },
+  //     },
+  //   }
+  // );
 });
 
 exports.withdraw = catchAsync(async (req, res, next) => {
