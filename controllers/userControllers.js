@@ -52,7 +52,7 @@ const updateReference = catchAsync(async (req) => {
   const transferAmount = req.body.amount;
 
   const targetUser = await User.findOne({ email: email });
-  const amount = transferAmount + targetUser.amount;
+  const amount = parseInt(transferAmount) + parseInt(targetUser.amount);
   targetUser.amount = amount;
 
   const targetUpdatedUser = await User.findOneAndUpdate(
