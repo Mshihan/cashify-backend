@@ -21,7 +21,6 @@ exports.signup = catchAsync(async (req, res, next) => {
     address: req.body.address,
     phoneNumber: req.body.phoneNumber,
     dob: req.body.dob,
-    gender: req.body.gender,
   });
 
   const token = signToken(newUser._id);
@@ -43,8 +42,14 @@ exports.login = catchAsync(async (req, res, next) => {
   const user = await User.findOne({ email }).select("+password");
 
   // 3) if everything is ok, send the json web token
-  const token = signToken(user._id);
 
+  if (user.password !== password) {
+    return res
+      .status(404)
+      .json({ status: "Not found", message: "Invalid credentials" });
+  }
+
+  const token = signToken(user._id);
   res.status(200).json({
     status: "success",
     token,

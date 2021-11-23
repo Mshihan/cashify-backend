@@ -19,11 +19,11 @@ router
   .patch(authControllers.protected, userControllers.deposit);
 router
   .route("/details")
-  .get(authControllers.protected, userControllers.details);
+  .post(authControllers.protected, userControllers.details);
 router
   .route("/transfer")
   .patch(authControllers.protected, userControllers.transfer);
-router.route("/nic-check").get(userControllers.nicChecker);
-router.route("/email-check").get(userControllers.emailChecker);
+router.route("/nic-check").post(userControllers.nicChecker);
+router.route("/email-check").post(userControllers.emailChecker);
 
 module.exports = router;

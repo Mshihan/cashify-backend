@@ -12,11 +12,14 @@ exports.details = catchAsync(async (req, res, next) => {
 });
 
 exports.transfer = catchAsync(async (req, res, next) => {
+  console.log("transfered");
   const email = req.body.email;
   const transferAmount = req.body.amount;
 
   const user = await User.findOne({ email });
   let amount = user.amount - transferAmount;
+
+  console.log(amount);
   if (amount < 0) {
     res.status(200).json({
       status: "Error",
